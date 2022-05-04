@@ -13,7 +13,7 @@ contract(Wallet, (accounts) => {
     await web3.eth.sendTransaction({
       from: accounts[0],
       to: wallet.address,
-      value: 100,
+      value: 1000,
     });
   });
 
@@ -40,9 +40,38 @@ contract(Wallet, (accounts) => {
   });
 
   it('should not create transfer if sender is not approved', async () => {
-    expectRevert(
+    await expectRevert(
       wallet.createTransfer(100, accounts[4], { from: accounts[5] }),
       'only approvers are allowed'
     );
+  });
+
+  it('should increment approval', async () => {
+    await wallet.createTransfer(100, accounts[4], { from: accounts[0] });
+    await wallet.approveTransfer(0, { from: accounts[0] });
+
+    const transfers = await wallet.getTransfer();
+    const balance = await web3.eth.getBalance(wallet.address);
+
+    assert(transfers[0].approvals === '1');
+    assert(transfers[0].sent === false);
+    assert(balance === '1000');
+  });
+
+  it('should create transfer when quorum is reached', async () => {
+    const beforeTrans = web3.utils.toBN(
+      await web3.eth.getBalance(wallet.address)
+    );
+
+    await wallet.createTransfer(100, accounts[4], { from: accounts[0] });
+
+    await wallet.approveTransfer(0, { from: accounts[0] });
+    await wallet.approveTransfer(0, { from: accounts[1] });
+
+    const afterTrans = web3.utils.toBN(
+      await web3.eth.getBalance(wallet.address)
+    );
+
+    assert(beforeTrans.sub(afterTrans).toNumber() === 100);
   });
 });
