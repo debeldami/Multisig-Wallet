@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import Wallet from '../../build/contracts/wallet.json';
+import Wallet from '/contracts/wallet.sol';
 
 //instantiate web3 object
 const getWeb3 = () => {
