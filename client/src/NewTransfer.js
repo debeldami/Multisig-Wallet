@@ -24,6 +24,7 @@ const NewTransfer = ({ createTransfer }) => {
         />
         <label htmlFor='to'>To</label>
         <input id='to' type='text' onChange={(e) => updateTransfer(e, 'to')} />
+        <button>submit</button>
       </form>
     </div>
   );
