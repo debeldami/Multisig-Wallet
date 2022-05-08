@@ -37,6 +37,12 @@ function App() {
     });
   };
 
+  const approveTransfer = async (transferId) => {
+    await wallet.methods.approveTransfer(transferId, {
+      from: accounts[0],
+    });
+  };
+
   if (
     typeof web3 === 'undefined' ||
     typeof accounts === 'undefined' ||
@@ -51,7 +57,7 @@ function App() {
     <div className='App'>
       <Header approvers={approvers} quorum={quorum} />
       <NewTransfer createTransfer={createTransfer} />
-      <TransferList transfers={transfers} />
+      <TransferList transfers={transfers} approveTransfer={approveTransfer} />
     </div>
   );
 }
