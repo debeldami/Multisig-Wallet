@@ -21,12 +21,13 @@ const TransferList = ({ transfers, approveTransfer }) => {
               <td>{transfer.amount}</td>
               <td>{transfer.to}</td>
               <td>
-                {transfer.approval}
+                {transfer.approvals}
+
                 <button onClick={() => approveTransfer(transfer.id)}>
                   approve
                 </button>
               </td>
-              <td>{transfer.sent}</td>
+              <td>{transfer.sent.toString()}</td>
             </tr>
           ))}
         </tbody>

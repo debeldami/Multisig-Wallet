@@ -35,12 +35,14 @@ function App() {
     await wallet.methods.createTransfer(transfer.amount, transfer.to).send({
       from: accounts[0],
     });
+    setTransfers(await wallet.methods.getTransfer().call());
   };
 
   const approveTransfer = async (transferId) => {
-    await wallet.methods.approveTransfer(transferId, {
+    await wallet.methods.approveTransfer(transferId).send({
       from: accounts[0],
     });
+    setTransfers(await wallet.methods.getTransfer().call());
   };
 
   if (
