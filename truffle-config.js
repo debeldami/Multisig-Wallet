@@ -1,4 +1,6 @@
 const path = require('path');
+const Provider = require('@truffle/hdwallet-provider');
+require('dotenv').config();
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -38,6 +40,16 @@ module.exports = {
   contracts_build_directory: path.join(__dirname, 'client/src/contract'),
 
   networks: {
+    goerli: {
+      provider: () =>
+        new Provider(
+          [process.env.S1, process.env.S2, process.env.S3],
+          'https://goerli.infura.io/v3/a6f0d3c2c8c14b7d9577176de45ab484',
+          0,
+          3
+        ),
+      network_id: 5,
+    },
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal
